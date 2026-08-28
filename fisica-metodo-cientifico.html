@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Física · Ciencia y método científico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blueprint: #16324F;
+    --blueprint-deep: #0E2338;
+    --grid-line: rgba(255,255,255,0.08);
+    --ink: #EAF0F5;
+    --ink-dim: #AEC3D6;
+    --paper: #F7F5EE;
+    --paper-line: #C9D6E0;
+    --amber: #F2A93B;
+    --teal: #5FCFC0;
+    --graphite: #263238;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--graphite);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, .display{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  /* ===== HERO ===== */
+  .hero{
+    position: relative;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(160deg, var(--blueprint-deep), var(--blueprint));
+    background-size: 28px 28px, 28px 28px, cover;
+    color: var(--ink);
+    padding: 4.5rem 1.5rem 5rem;
+    overflow: hidden;
+  }
+
+  .hero-inner{ max-width: 780px; margin: 0 auto; }
+
+  .eyebrow{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .eyebrow::before{
+    content: "";
+    width: 22px; height: 2px;
+    background: var(--teal);
+    display: inline-block;
+  }
+
+  .hero h1{
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    margin: 0 0 0.9rem;
+  }
+  .hero h1 span{ color: var(--amber); }
+
+  .hero p{
+    color: var(--ink-dim);
+    font-size: 1.08rem;
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  /* ===== RULER DIVIDER (elemento distintivo) ===== */
+  .ruler{
+    position: relative;
+    height: 46px;
+    background: var(--paper);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--graphite) 0, var(--graphite) 1px,
+      transparent 1px, transparent calc(100% / 60)
+    );
+    background-position: 0 100%;
+    background-size: 100% 10px;
+    background-repeat: no-repeat;
+    border-bottom: 2px solid var(--graphite);
+  }
+  .ruler::before{
+    /* marcas largas cada 5 unidades */
+    content:"";
+    position:absolute; left:0; right:0; bottom:0; height:18px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--graphite) 0, var(--graphite) 1.5px,
+      transparent 1.5px, transparent calc(100% / 12)
+    );
+  }
+  .ruler-nums{
+    position:absolute; left:0; right:0; top:4px;
+    display:flex; justify-content: space-between;
+    padding: 0 1.5rem;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--graphite);
+    opacity:0.65;
+  }
+
+  /* ===== SECTIONS ===== */
+  section{ max-width: 780px; margin: 0 auto; padding: 3.4rem 1.5rem; }
+
+  .kicker{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7A8C9A;
+    margin-bottom: 0.6rem;
+  }
+
+  h2{ font-size: 1.7rem; margin: 0 0 1.1rem; color: var(--blueprint-deep); }
+  h2 em{ font-style: normal; color: var(--amber); }
+
+  p{ margin: 0 0 1rem; }
+
+  /* Contraste Biología / Física */
+  .contrast{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .contrast-card{
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 4px;
+    padding: 1.3rem 1.2rem;
+  }
+  .contrast-card.new{ border-color: var(--amber); border-width: 2px; }
+  .contrast-card .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7A8C9A;
+  }
+  .contrast-card.new .tag{ color: #B4791F; }
+  .contrast-card h3{ margin: 0.3rem 0 0.6rem; font-size: 1.15rem; }
+  .contrast-card ul{ margin: 0; padding-left: 1.1rem; font-size: 0.95rem; }
+  .contrast-card li{ margin-bottom: 0.3rem; }
+
+  @media (max-width: 560px){
+    .contrast{ grid-template-columns: 1fr; }
+  }
+
+  /* Definición de ciencia */
+  .definition{
+    background: var(--blueprint-deep);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: 1.6rem 1.7rem;
+    margin: 1.4rem 0;
+  }
+  .definition p{ margin:0; color: var(--ink); font-size: 1.05rem; }
+  .traits{
+    display:flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+  .traits span{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--teal);
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+  }
+
+  /* Pasos del método - numeración real, sí aporta información */
+  .steps{ margin-top: 1.5rem; }
+  .step{
+    display:grid;
+    grid-template-columns: 44px 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--paper-line);
+  }
+  .step:last-child{ border-bottom: 1px solid var(--paper-line); }
+  .step .num{
+    font-family:'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: #fff;
+    background: var(--blueprint);
+    width: 32px; height: 32px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius: 50%;
+    font-size: 0.95rem;
+  }
+  .step h3{ margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .step p{ margin: 0; font-size: 0.95rem; color: #45525A; }
+  .step .example{
+    display:block; margin-top: 0.35rem;
+    font-size: 0.85rem; color: #B4791F;
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  /* Tablas para copiar */
+  .table-wrap{
+    background: #fff;
+    border: 1.5px solid var(--graphite);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 1.2rem;
+  }
+  .table-head{
+    display:flex; align-items:center; justify-content: space-between;
+    background: var(--paper);
+    padding: 0.6rem 1rem;
+    border-bottom: 1.5px solid var(--graphite);
+  }
+  .table-head span{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #556;
+  }
+  .copy-btn{
+    font-family:'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--blueprint);
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .copy-btn:hover{ background: var(--blueprint-deep); }
+  .copy-btn:focus-visible{ outline: 3px solid var(--amber); outline-offset: 2px; }
+
+  table{ width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td{
+    border: 1px solid var(--paper-line);
+    padding: 0.6rem 0.7rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th{
+    background: #EFF3F6;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #40505C;
+  }
+  td.blank{ height: 2.4rem; }
+
+  /* Actividad de la regla */
+  .activity{
+    background: #fff;
+    border-left: 4px solid var(--teal);
+    padding: 1.2rem 1.4rem;
+    margin-top: 1.4rem;
+    border-radius: 0 4px 4px 0;
+  }
+  .activity ol{ padding-left: 1.2rem; margin: 0.8rem 0 0; }
+  .activity li{ margin-bottom: 0.5rem; }
+
+  .print-header{
+    display: none;
+  }
+
+  .reflect{
+    background: var(--amber);
+    color: var(--blueprint-deep);
+    border-radius: 6px;
+    padding: 1.5rem 1.6rem;
+    margin-top: 1rem;
+  }
+  .reflect .kicker{ color: rgba(14,35,56,0.65); }
+  .reflect p{ margin:0; font-size: 1.05rem; font-weight: 500; }
+
+  footer{
+    text-align:center;
+    padding: 2.5rem 1.5rem 3rem;
+    color: #7A8C9A;
+    font-size: 0.85rem;
+  }
+
+  .print-page-btn{
+    display:block;
+    margin: 0 auto 0;
+    background: var(--amber);
+    color: var(--blueprint-deep);
+    border: none;
+    font-family:'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  @media print{
+    .hero{ background: none; color: var(--graphite); padding: 1rem 0; }
+    .hero .eyebrow, .hero p{ color: #333; }
+    .hero h1 span{ color: #333; }
+    .ruler{ display:none; }
+    .copy-btn, .print-page-btn{ display:none; }
+    .definition{ background:#fff; color:#000; border:1px solid #999; }
+    .definition p{ color:#000; }
+    .traits span{ background:#fff; border:1px solid #999; color:#000; }
+    .print-header{
+      display:flex; justify-content: space-between;
+      font-family:'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      border-bottom: 1px solid #999;
+      padding-bottom: 0.5rem;
+      margin: 0 1.5rem 1rem;
+    }
+    section{ padding: 1.2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-header">
+  <span>Nombre: ________________________</span>
+  <span>Grupo: _______</span>
+  <span>Fecha: _______</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Física · 2.º de secundaria</div>
+    <h1>De observar la vida a <span>medir el universo</span></h1>
+    <p>Ya sabes observar y clasificar seres vivos. Ahora vas a aprender el oficio de la física: hacer preguntas sobre el mundo físico y responderlas con medidas, no con opiniones.</p>
+  </div>
+</header>
+
+<div class="ruler"><div class="ruler-nums"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span></div></div>
+
+<section id="bio-fisica">
+  <div class="kicker">Punto de partida</div>
+  <h2>De la biología a la <em>física</em></h2>
+  <p>En biología aprendiste a observar seres vivos: clasificarlos, describir su estructura y su funcionamiento. La física parte de la misma curiosidad, pero cambia el objeto de estudio.</p>
+  <div class="contrast">
+    <div class="contrast-card">
+      <div class="tag">El año pasado</div>
+      <h3>Biología</h3>
+      <ul>
+        <li>Estudia a los seres vivos</li>
+        <li>Observas, describes y clasificas</li>
+        <li>Preguntas del tipo "¿qué es?" y "¿cómo funciona?"</li>
+      </ul>
+    </div>
+    <div class="contrast-card new">
+      <div class="tag">A partir de hoy</div>
+      <h3>Física</h3>
+      <ul>
+        <li>Estudia la materia, la energía y el movimiento</li>
+        <li>Observas, <strong>mides</strong> y calculas</li>
+        <li>Preguntas del tipo "¿cuánto?" y "¿por qué se comporta así?"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="que-es-ciencia">
+  <div class="kicker">Concepto clave</div>
+  <h2>¿Qué es la <em>ciencia</em>?</h2>
+  <p>La ciencia es el conjunto de conocimientos que obtenemos al observar y experimentar con el mundo, y que organizamos en principios y leyes para explicar cómo funciona.</p>
+  <div class="definition">
+    <p>Un conocimiento es <strong>científico</strong> cuando alguien más lo puede comprobar repitiendo la observación o el experimento — no basta con que "parezca cierto".</p>
+    <div class="traits">
+      <span>Objetiva</span>
+      <span>Verificable</span>
+      <span>Basada en evidencia</span>
+      <span>Se puede corregir</span>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="kicker">Herramienta de trabajo</div>
+  <h2>El <em>método científico</em></h2>
+  <p>Es la secuencia de pasos que seguimos para responder una pregunta sobre el mundo de forma confiable. El orden importa: cada paso depende del anterior.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div>
+        <h3>Observación</h3>
+        <p>Te fijas en algo que ocurre en tu entorno.</p>
+        <span class="example">Ej: "Esta pelota rebota más alto que aquella."</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div>
+        <h3>Pregunta</h3>
+        <p>Conviertes la observación en algo que se pueda investigar.</p>
+        <span class="example">Ej: "¿Por qué unas pelotas rebotan más que otras?"</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div>
+        <h3>Hipótesis</h3>
+        <p>Propones una respuesta posible, antes de comprobarla.</p>
+        <span class="example">Ej: "El material de la pelota determina qué tanto rebota."</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div>
+        <h3>Experimentación</h3>
+        <p>Diseñas una prueba y mides lo que ocurre.</p>
+        <span class="example">Ej: Sueltas distintas pelotas desde la misma altura y mides el rebote.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div>
+        <h3>Análisis de datos</h3>
+        <p>Organizas y comparas los resultados obtenidos.</p>
+        <span class="example">Ej: Anotas la altura de rebote de cada pelota en una tabla.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">6</div>
+      <div>
+        <h3>Conclusión</h3>
+        <p>Dices si la hipótesis se sostiene o si hay que corregirla.</p>
+        <span class="example">Ej: "El material sí influye: el hule rebota más que la espuma."</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tabla-metodo">
+  <div class="kicker">Para tu cuaderno</div>
+  <h2>Tabla 1 · Copia esta tabla</h2>
+  <p>Cópiala tal cual en tu cuaderno. La usarás cada vez que analicemos un experimento en clase.</p>
+  <div class="table-wrap">
+    <div class="table-head">
+      <span>Tabla 1 · Pasos del método científico</span>
+      <button class="copy-btn" data-table="tabla1">Copiar tabla</button>
+    </div>
+    <table id="tabla1">
+      <thead>
+        <tr><th>Paso</th><th>Qué se hace</th><th>Ejemplo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1. Observación</td><td>Te fijas en algo que ocurre</td><td>Una pelota rebota más que otra</td></tr>
+        <tr><td>2. Pregunta</td><td>Conviertes lo observado en pregunta</td><td>¿Por qué rebota más?</td></tr>
+        <tr><td>3. Hipótesis</td><td>Propones una respuesta posible</td><td>El material influye en el rebote</td></tr>
+        <tr><td>4. Experimentación</td><td>Diseñas una prueba y mides</td><td>Sueltas pelotas y mides la altura</td></tr>
+        <tr><td>5. Análisis de datos</td><td>Comparas los resultados</td><td>Anotas alturas en una tabla</td></tr>
+        <tr><td>6. Conclusión</td><td>Aceptas o corriges la hipótesis</td><td>El hule rebota más que la espuma</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="actividad-regla">
+  <div class="kicker">Manos a la obra</div>
+  <h2>Tu regla es tu primer <em>instrumento científico</em></h2>
+  <p>En física, "medir" es el verbo más importante: es lo que separa una opinión de un dato. Por eso pedí que trajeras una regla — hoy la vamos a usar para vivir el método científico en primera persona.</p>
+  <div class="activity">
+    <strong>Actividad de 10 minutos:</strong>
+    <ol>
+      <li><strong>Estima</strong> a ojo la medida de 4 objetos de tu salón (sin usar la regla todavía). Esto funciona como tu hipótesis.</li>
+      <li><strong>Mide</strong> esos mismos objetos con tu regla, en centímetros. Esto es tu experimentación.</li>
+      <li><strong>Compara</strong> tu estimación contra la medida real y anota la diferencia. Esto es tu análisis de datos.</li>
+      <li><strong>Concluye</strong>: escribe si tu ojo tiende a sobrestimar o subestimar las medidas.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="tabla-regla">
+  <div class="kicker">Para llenar en clase</div>
+  <h2>Tabla 2 · Copia y llena esta tabla</h2>
+  <p>Copia esta tabla en tu cuaderno y llénala mientras haces la actividad de la regla.</p>
+  <div class="table-wrap">
+    <div class="table-head">
+      <span>Tabla 2 · Estimar vs. medir</span>
+      <button class="copy-btn" data-table="tabla2">Copiar tabla</button>
+    </div>
+    <table id="tabla2">
+      <thead>
+        <tr><th>Objeto</th><th>Medida estimada (cm)</th><th>Medida real (cm)</th><th>Diferencia (cm)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Lápiz</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+        <tr><td>Cuaderno (ancho)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+        <tr><td>Borrador</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+        <tr><td>Tu mano (largo)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="reflexion">
+  <div class="kicker">Antes de terminar</div>
+  <h2>Para tu cuaderno</h2>
+  <div class="reflect">
+    <p>¿Por qué medir con un instrumento es más confiable que medir "a ojo"? Escribe tu respuesta en al menos tres líneas.</p>
+  </div>
+</section>
+
+<div class="ruler"><div class="ruler-nums"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span></div></div>
+
+<footer>
+  <button class="print-page-btn" onclick="window.print()">Imprimir esta página</button>
+  <p style="margin-top:1rem;">Física · Ciencia y método científico</p>
+</footer>
+
+<script>
+  function tableToTSV(table){
+    const rows = Array.from(table.querySelectorAll('tr'));
+    return rows.map(row =>
+      Array.from(row.children).map(cell => cell.textContent.trim()).join('\t')
+    ).join('\n');
+  }
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const table = document.getElementById(btn.dataset.table);
+      const text = tableToTSV(table);
+      try{
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = '¡Copiada!';
+        setTimeout(() => { btn.textContent = original; }, 1500);
+      }catch(err){
+        btn.textContent = 'No se pudo copiar';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
