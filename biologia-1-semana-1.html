@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biología 1.º de secundaria: Semana 1</title>
+<style>
+  :root{
+    --paper:#f5f9fc; --grid:#d8e5ef; --sheet:#ffffff; --ink:#1c2b4a; --muted:#4a5a76;
+    --leaf:#187a52; --on-leaf:#ffffff; --leaf-soft:#e0f3e9; --marker:#ffe36b; --margin:#e5665c;
+    --line:#c6d6e4; --good:#187a52; --bad:#b83a30;
+    color-scheme: light;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#121a26; --grid:#1f2c3d; --sheet:#182333; --ink:#e6edf7; --muted:#a3b3ca;
+      --leaf:#5fd3a0; --on-leaf:#0d2a1f; --leaf-soft:#173a2d; --marker:#6f6013; --margin:#ff8a80;
+      --line:#2b3b52; --good:#5fd3a0; --bad:#ff8a80;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#121a26; --grid:#1f2c3d; --sheet:#182333; --ink:#e6edf7; --muted:#a3b3ca;
+    --leaf:#5fd3a0; --on-leaf:#0d2a1f; --leaf-soft:#173a2d; --marker:#6f6013; --margin:#ff8a80;
+    --line:#2b3b52; --good:#5fd3a0; --bad:#ff8a80;
+    color-scheme: dark;
+  }
+
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 4.5rem);-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:26px 26px;
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:clamp(1rem,.96rem + .25vw,1.125rem);
+    line-height:1.65;
+  }
+  h1,h2,h3,h4{
+    font-family:"Trebuchet MS","Avenir Next","Segoe UI",system-ui,sans-serif;
+    font-weight:800; line-height:1.2; letter-spacing:-.01em;
+  }
+  a{color:var(--leaf);text-underline-offset:.15em}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--leaf);outline-offset:2px;border-radius:4px}
+  mark{background:linear-gradient(transparent 52%, var(--marker) 52%);color:inherit;padding:0 .12em}
+  p{max-width:66ch}
+
+  .wrap{max-width:52rem;margin:0 auto;padding:0 clamp(.75rem,3vw,1.5rem)}
+
+  /* Portada */
+  .cover{padding:clamp(1.5rem,5vw,3rem) 0 1.25rem}
+  .label{
+    display:inline-block; margin:0 0 1.25rem; padding:.7rem 1rem .8rem;
+    background:var(--sheet); border:2px solid var(--ink); border-radius:10px;
+    transform:rotate(-1.2deg); min-width:min(100%,17rem);
+  }
+  .label div{display:flex;align-items:baseline;gap:.6rem}
+  .label div + div{margin-top:.15rem}
+  .label dt{font-size:.85rem;color:var(--muted);flex:none;width:4.2rem}
+  .label dd{margin:0;flex:1;font-weight:700;border-bottom:1.5px solid var(--ink);padding:0 .3rem}
+  .cover h1{font-size:clamp(2rem,1.2rem + 3.8vw,3.3rem);margin:0 0 .8rem;max-width:20ch}
+  .lead{font-size:1.08em;color:var(--muted);margin:0}
+
+  /* Navegación */
+  .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1.5px solid var(--line)}
+  .tabs ul{list-style:none;margin:0;padding:.55rem 0;display:flex;gap:.5rem;overflow-x:auto}
+  .tabs a{display:block;white-space:nowrap;padding:.3rem .85rem;border:1.5px solid var(--line);border-radius:999px;background:var(--sheet);color:var(--ink);text-decoration:none;font-size:.95rem}
+  .tabs a:hover{border-color:var(--ink)}
+
+  /* Hoja */
+  .sheet{
+    position:relative; margin:1.25rem 0 2rem; background:var(--sheet);
+    border:1px solid var(--line); border-radius:10px;
+    padding:clamp(1.25rem,4vw,2.25rem) clamp(1rem,4vw,2rem) 2.5rem clamp(2.6rem,10vw,4.6rem);
+  }
+  .sheet::before{content:"";position:absolute;top:0;bottom:0;left:clamp(1.5rem,6vw,2.9rem);width:2px;background:var(--margin);opacity:.6}
+  section + section{margin-top:3rem}
+  h2{font-size:clamp(1.5rem,1.1rem + 1.8vw,2.15rem);margin:0 0 .8rem}
+  h3{font-size:1.2rem;margin:1.8rem 0 .5rem}
+  h4{font-size:1.02rem;margin:0 0 .3rem}
+
+  /* Ruta */
+  .progress-row{display:flex;align-items:center;gap:.9rem;margin:1rem 0 .25rem;max-width:32rem}
+  .bar{flex:1;height:.65rem;background:var(--line);border-radius:999px;overflow:hidden}
+  .bar > div{height:100%;width:0;background:var(--leaf);border-radius:999px;transition:width .3s ease}
+  #progress-text{font-size:.92rem;color:var(--muted);white-space:nowrap}
+  .check{list-style:none;margin:.5rem 0 0;padding:0}
+  .check label{display:flex;gap:.75rem;align-items:flex-start;padding:.6rem 0;border-bottom:1.5px solid var(--line);cursor:pointer}
+  .check input{width:1.3rem;height:1.3rem;margin:.2rem 0 0;flex:none;accent-color:var(--leaf)}
+  .check li.done label > span{color:var(--muted);text-decoration:line-through}
+  .small{font-size:.92rem;color:var(--muted)}
+
+  /* Ciencia */
+  .definition{border-left:5px solid var(--leaf);background:var(--leaf-soft);padding:1rem 1.1rem;border-radius:0 8px 8px 0;margin:1.2rem 0}
+  .definition p{margin:0}
+  .traits{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem 1.75rem}
+  .traits li{position:relative;padding-left:1.5rem}
+  .traits li::before{content:"";position:absolute;left:0;top:.6em;width:.7rem;height:.7rem;border-radius:50%;background:var(--leaf)}
+  .traits p{margin:.1rem 0 0}
+  .compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem;margin:1rem 0}
+  .compare > div{border:1.5px solid var(--line);border-radius:8px;padding:.9rem 1rem}
+  .compare .yes{border-color:var(--leaf)}
+  .compare p{margin:.3rem 0 0}
+
+  /* Método */
+  .case{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem 1rem;margin:1.2rem 0}
+  .case p{margin:0}
+  .steps{list-style:none;counter-reset:step;margin:1.4rem 0;padding:0}
+  .steps > li{counter-increment:step;position:relative;padding:0 0 1.7rem 3.3rem}
+  .steps > li::before{
+    content:counter(step);position:absolute;left:0;top:0;width:2.25rem;height:2.25rem;border-radius:50%;
+    background:var(--leaf);color:var(--on-leaf);font-weight:800;display:grid;place-items:center;
+    font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  }
+  .steps > li::after{content:"";position:absolute;left:1.05rem;top:2.5rem;bottom:.3rem;width:2px;background:var(--line)}
+  .steps > li:last-child::after{display:none}
+  .steps h3{margin:.15rem 0 .3rem}
+  .steps p{margin:0}
+  .ex{margin-top:.55rem !important;border:1.5px dashed var(--muted);border-radius:8px;padding:.55rem .8rem;font-size:.96em}
+  dl.words{margin:.5rem 0 0}
+  dl.words dt{font-weight:700;margin-top:.7rem}
+  dl.words dd{margin:.1rem 0 0}
+
+  /* Repaso */
+  .q{border:1.5px solid var(--line);border-radius:8px;padding:1rem;margin:1rem 0}
+  .q .qt{font-weight:700;margin:0 0 .7rem}
+  .opts{display:grid;gap:.5rem}
+  button.opt{font:inherit;color:var(--ink);text-align:left;background:var(--sheet);border:1.5px solid var(--line);border-radius:8px;padding:.6rem .85rem;cursor:pointer}
+  button.opt:hover:not(:disabled){border-color:var(--ink)}
+  button.opt:disabled{cursor:default;opacity:1}
+  button.opt.correct{border-color:var(--good);background:var(--leaf-soft)}
+  button.opt.wrong{border-color:var(--bad)}
+  .why{margin:.7rem 0 0;font-size:.96em}
+  .score{font-weight:700;margin-top:1rem}
+
+  /* Actividades */
+  .activity{border:2px solid var(--ink);border-radius:10px;padding:1.1rem 1.25rem 1.25rem;margin:1.4rem 0}
+  .activity h3{margin-top:0}
+  .activity ul{padding-left:1.2rem;margin:.6rem 0}
+  .activity li{margin:.3rem 0}
+  .layouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1.25rem;margin:1rem 0 .5rem}
+  .layouts figure{margin:0}
+  .layouts svg{width:100%;max-width:11rem;height:auto;display:block}
+  .layouts figcaption{margin-top:.4rem}
+  .layouts h4{margin-top:.2rem}
+  .w-frame{fill:var(--sheet);stroke:var(--ink);stroke-width:1.5}
+  .w-box{fill:var(--leaf-soft);stroke:var(--leaf);stroke-width:1.5}
+  .w-dot{fill:var(--leaf)}
+  .w-line{fill:var(--line)}
+  .w-link{stroke:var(--muted);stroke-width:1.5;fill:none}
+
+  footer{text-align:center;color:var(--muted);font-size:.92rem;padding:0 0 2rem}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="cover">
+    <dl class="label">
+      <div><dt>Materia</dt><dd>Biología</dd></div>
+      <div><dt>Grado</dt><dd>1.º de secundaria</dd></div>
+      <div><dt>Semana</dt><dd>1</dd></div>
+    </dl>
+    <h1>¿Qué es la ciencia y cómo se investiga?</h1>
+    <p class="lead">Esta semana vas a descubrir qué significa hacer ciencia y cuáles son los pasos que siguen los científicos para responder preguntas. Avanza a tu ritmo: lee, practica en tu cuaderno y envía tus fotos por Remind.</p>
+  </header>
+
+  <nav class="tabs" aria-label="Secciones de la página">
+    <ul>
+      <li><a href="#ruta">Tu ruta</a></li>
+      <li><a href="#ciencia">La ciencia</a></li>
+      <li><a href="#metodo">Método científico</a></li>
+      <li><a href="#repaso">Repaso</a></li>
+      <li><a href="#actividades">Actividades</a></li>
+      <li><a href="#entrega">Entrega</a></li>
+    </ul>
+  </nav>
+
+  <main class="sheet">
+
+    <section id="ruta">
+      <h2>Tu ruta de la semana</h2>
+      <p>Sigue estos pasos en orden. Marca cada uno cuando lo termines.</p>
+      <div class="progress-row">
+        <div class="bar" role="progressbar" aria-label="Avance de la semana" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><div id="bar"></div></div>
+        <span id="progress-text">0 de 5 pasos completados</span>
+      </div>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="s1"><span>Lee <a href="#ciencia">¿Qué es la ciencia?</a></span></label></li>
+        <li><label><input type="checkbox" data-id="s2"><span>Lee <a href="#metodo">El método científico</a></span></label></li>
+        <li><label><input type="checkbox" data-id="s3"><span>Haz la <a href="#act1">Actividad 1</a>: define ciencia con tus palabras</span></label></li>
+        <li><label><input type="checkbox" data-id="s4"><span>Haz la <a href="#act2">Actividad 2</a>: infografía o mapa mental del método científico</span></label></li>
+        <li><label><input type="checkbox" data-id="s5"><span><a href="#entrega">Envía las fotos</a> de tus actividades por Remind</span></label></li>
+      </ul>
+      <p class="small">Tu avance se guarda en este dispositivo.</p>
+    </section>
+
+    <section id="ciencia">
+      <h2>¿Qué es la ciencia?</h2>
+      <p>La ciencia es una manera de entender el mundo que nos rodea. Empieza con preguntas, como <em>¿por qué se doblan las plantas hacia la ventana?</em> o <em>¿por qué llueve?</em>, y busca respuestas con observaciones y pruebas, no con suposiciones.</p>
+
+      <div class="definition">
+        <p><strong>Ciencia:</strong> conjunto de conocimientos organizados sobre el mundo natural, que se obtienen al <mark>observar</mark>, <mark>experimentar</mark> y razonar, y que se pueden comprobar.</p>
+      </div>
+
+      <h3>Cuatro rasgos de la ciencia</h3>
+      <ul class="traits">
+        <li><h4>Empieza con curiosidad</h4><p>Toda investigación parte de una pregunta que alguien quiere resolver.</p></li>
+        <li><h4>Se apoya en evidencia</h4><p>La <mark>evidencia</mark> son datos y observaciones reales. Una idea sin evidencia todavía no es ciencia.</p></li>
+        <li><h4>Se puede comprobar</h4><p>Otras personas pueden repetir la investigación y obtener resultados parecidos.</p></li>
+        <li><h4>Puede cambiar</h4><p>Si aparece nueva evidencia, los científicos corrigen o mejoran lo que se sabía.</p></li>
+      </ul>
+
+      <h3>¿Pregunta científica u opinión?</h3>
+      <p>No todas las preguntas se pueden investigar con ciencia. Una buena señal es preguntarte: <em>¿puedo medirlo u observarlo?</em></p>
+      <div class="compare">
+        <div>
+          <h4>Opinión</h4>
+          <p>«Los gatos son mejores que los perros.»</p>
+          <p class="small">Depende del gusto de cada persona. No hay nada que medir.</p>
+        </div>
+        <div class="yes">
+          <h4>Pregunta que la ciencia puede investigar</h4>
+          <p>«¿Cuántas horas al día duerme un gato adulto?»</p>
+          <p class="small">Se puede observar, medir y repetir con otros gatos.</p>
+        </div>
+      </div>
+
+      <h3>¿Y dónde queda la biología?</h3>
+      <p>La ciencia tiene muchas ramas. La <mark>biología</mark> es la que estudia a los seres vivos: cómo son, cómo funcionan, cómo se relacionan entre sí y cómo cambian con el tiempo. También existen la física, que estudia la materia y la energía, y la química, que estudia de qué está hecha la materia y cómo cambia.</p>
+    </section>
+
+    <section id="metodo">
+      <h2>El método científico</h2>
+      <p>El <mark>método científico</mark> es un conjunto de pasos ordenados que ayudan a investigar un problema de forma confiable. No es una receta rígida: muchas veces los científicos regresan a un paso anterior, ajustan su idea o repiten el experimento.</p>
+
+      <div class="case">
+        <p><strong>Un mismo ejemplo para todos los pasos:</strong> ¿la temperatura influye en qué tan rápido germinan los frijoles? Los resultados que verás son imaginarios y solo sirven para practicar.</p>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <h3>Observación</h3>
+          <p>Mirar con atención lo que pasa a tu alrededor, usando tus sentidos o instrumentos como una lupa o una regla.</p>
+          <p class="ex"><strong>Ejemplo:</strong> notas que los frijoles que dejaste junto a la estufa brotaron antes que los que estaban en la alacena.</p>
+        </li>
+        <li>
+          <h3>Planteamiento del problema</h3>
+          <p>Convertir lo que observaste en una pregunta que se pueda investigar.</p>
+          <p class="ex"><strong>Ejemplo:</strong> ¿la temperatura influye en la rapidez con que germinan los frijoles?</p>
+        </li>
+        <li>
+          <h3>Hipótesis</h3>
+          <p>Una respuesta posible a tu pregunta, que se pueda poner a prueba. Una forma útil de escribirla es «Si…, entonces…».</p>
+          <p class="ex"><strong>Ejemplo:</strong> si los frijoles están en un lugar más tibio, entonces germinarán más rápido.</p>
+        </li>
+        <li>
+          <h3>Experimentación</h3>
+          <p>Diseñar una prueba controlada y realizarla. La clave es cambiar <mark>una sola cosa</mark> a la vez y mantener todo lo demás igual.</p>
+          <p class="ex"><strong>Ejemplo:</strong> tres vasos con algodón húmedo y cinco frijoles en cada uno. Uno se coloca en un lugar fresco, otro a temperatura ambiente y otro en un lugar tibio (sin calor excesivo). Se revisan todos los días y se anota cuántos frijoles han germinado.</p>
+        </li>
+        <li>
+          <h3>Análisis de resultados</h3>
+          <p>Organizar los datos en tablas o gráficas y buscar patrones.</p>
+          <p class="ex"><strong>Ejemplo (datos imaginarios):</strong> al cuarto día, en el lugar tibio habían germinado 5 de 5 frijoles; a temperatura ambiente, 3 de 5; en el lugar fresco, ninguno.</p>
+        </li>
+        <li>
+          <h3>Conclusión</h3>
+          <p>Decidir si los resultados apoyan tu hipótesis o no, y explicar por qué. Si no la apoyan, no pasa nada: también aprendiste algo y puedes plantear otra hipótesis.</p>
+          <p class="ex"><strong>Ejemplo:</strong> los resultados apoyan la hipótesis, porque los frijoles del lugar tibio germinaron primero. Para estar más seguros, el experimento se repetiría varias veces.</p>
+        </li>
+        <li>
+          <h3>Comunicación de resultados</h3>
+          <p>Compartir lo que descubriste con un informe, un cartel o una exposición, para que otras personas lo revisen y lo puedan repetir.</p>
+          <p class="ex"><strong>Ejemplo:</strong> presentas tu experimento con una tabla, una gráfica y tu conclusión.</p>
+        </li>
+      </ol>
+
+      <h3>Palabras clave</h3>
+      <dl class="words">
+        <dt>Evidencia</dt><dd>Datos u observaciones que apoyan o contradicen una idea.</dd>
+        <dt>Hipótesis</dt><dd>Respuesta posible a una pregunta, que se puede comprobar.</dd>
+        <dt>Conclusión</dt><dd>Decisión final sobre si los resultados apoyan o no la hipótesis.</dd>
+      </dl>
+    </section>
+
+    <section id="repaso">
+      <h2>Comprueba lo que entendiste</h2>
+      <p>Este repaso es opcional y no se entrega. Sirve para que veas si te quedó clara la lectura antes de hacer las actividades.</p>
+      <div id="quiz"></div>
+    </section>
+
+    <section id="actividades">
+      <h2>Actividades para tu cuaderno</h2>
+      <p>Puedes hacerlas a mano en tu cuaderno o de forma digital en la app Pages. En los dos casos las entregas como imágenes por Remind.</p>
+
+      <article class="activity" id="act1">
+        <h3>Actividad 1: define ciencia con tus palabras</h3>
+        <p>Escribe tu propia definición de ciencia, sin copiar la del texto.</p>
+        <ul>
+          <li>Incluye al menos dos rasgos de la ciencia.</li>
+          <li>Da un ejemplo de una pregunta que la ciencia puede investigar.</li>
+          <li>Da un ejemplo de algo que sea solo una opinión.</li>
+        </ul>
+        <p class="small">Para empezar, puedes escribir: «Para mí, la ciencia es…».</p>
+      </article>
+
+      <article class="activity" id="act2">
+        <h3>Actividad 2: el método científico en una infografía o en un mapa mental</h3>
+        <p>Elige <strong>una</strong> de las dos opciones. En cualquiera debes mostrar los siete pasos del método científico en orden, explicados con tus palabras, y un ejemplo. Puede ser el de los frijoles o uno que inventes tú.</p>
+        <div class="layouts">
+          <figure>
+            <svg viewBox="0 0 140 180" role="img" aria-label="Boceto de una infografía con título y cuatro pasos numerados">
+              <rect class="w-frame" x="2" y="2" width="136" height="176" rx="6"/>
+              <rect class="w-box" x="14" y="12" width="112" height="16" rx="3"/>
+              <g><circle class="w-dot" cx="24" cy="48" r="8"/><rect class="w-line" x="38" y="42" width="80" height="5" rx="2"/><rect class="w-line" x="38" y="52" width="58" height="5" rx="2"/></g>
+              <g><circle class="w-dot" cx="24" cy="80" r="8"/><rect class="w-line" x="38" y="74" width="80" height="5" rx="2"/><rect class="w-line" x="38" y="84" width="58" height="5" rx="2"/></g>
+              <g><circle class="w-dot" cx="24" cy="112" r="8"/><rect class="w-line" x="38" y="106" width="80" height="5" rx="2"/><rect class="w-line" x="38" y="116" width="58" height="5" rx="2"/></g>
+              <g><circle class="w-dot" cx="24" cy="144" r="8"/><rect class="w-line" x="38" y="138" width="80" height="5" rx="2"/><rect class="w-line" x="38" y="148" width="58" height="5" rx="2"/></g>
+            </svg>
+            <figcaption>
+              <h4>Infografía</h4>
+              <p class="small">Un título grande y los pasos en orden. Cada paso lleva su número, una explicación corta y un dibujo o ícono.</p>
+            </figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 180 180" role="img" aria-label="Boceto de un mapa mental con un tema central y seis ramas">
+              <line class="w-link" x1="90" y1="90" x2="30" y2="30"/><line class="w-link" x1="90" y1="90" x2="90" y2="18"/><line class="w-link" x1="90" y1="90" x2="150" y2="30"/>
+              <line class="w-link" x1="90" y1="90" x2="30" y2="150"/><line class="w-link" x1="90" y1="90" x2="90" y2="162"/><line class="w-link" x1="90" y1="90" x2="150" y2="150"/>
+              <ellipse class="w-dot" cx="90" cy="90" rx="34" ry="17"/>
+              <ellipse class="w-box" cx="30" cy="30" rx="22" ry="12"/><ellipse class="w-box" cx="90" cy="18" rx="22" ry="12"/><ellipse class="w-box" cx="150" cy="30" rx="22" ry="12"/>
+              <ellipse class="w-box" cx="30" cy="150" rx="22" ry="12"/><ellipse class="w-box" cx="90" cy="162" rx="22" ry="12"/><ellipse class="w-box" cx="150" cy="150" rx="22" ry="12"/>
+            </svg>
+            <figcaption>
+              <h4>Mapa mental</h4>
+              <p class="small">«Método científico» en el centro y una rama por cada paso. En cada rama escribe palabras clave y un mini ejemplo.</p>
+            </figcaption>
+          </figure>
+        </div>
+        <p class="small">Los bocetos son solo una idea. Usa colores, letras claras y títulos grandes para que se entienda a simple vista.</p>
+      </article>
+    </section>
+
+    <section id="entrega">
+      <h2>Cómo entregar tus actividades por Remind</h2>
+      <ol class="steps">
+        <li>
+          <h3>Prepara tu trabajo</h3>
+          <p>Escribe tu nombre en la parte de arriba de cada hoja o de cada archivo de Pages.</p>
+        </li>
+        <li>
+          <h3>Toma las fotos</h3>
+          <p>Busca buena luz y evita las sombras. Que se vea la hoja completa y que el texto se pueda leer. Si trabajaste en Pages, toma capturas de pantalla claras o exporta tu archivo.</p>
+        </li>
+        <li>
+          <h3>Envíalas por Remind</h3>
+          <p>Abre Remind y manda las imágenes a tu docente en el chat de la clase.</p>
+        </li>
+        <li>
+          <h3>Identifica tu envío</h3>
+          <p>En el mensaje escribe tu nombre, «Biología, Semana 1» y a qué actividad corresponde cada imagen.</p>
+        </li>
+      </ol>
+      <p>Si tienes dudas sobre alguna actividad, pregunta por el mismo chat de Remind.</p>
+    </section>
+
+  </main>
+
+  <footer>Biología, 1.º de secundaria. Semana 1.</footer>
+</div>
+
+<script>
+(function(){
+  /* Ruta de la semana */
+  var KEY = 'bio1-semana1-ruta';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.check input'));
+  var bar = document.getElementById('bar');
+  var barWrap = bar.parentNode;
+  var txt = document.getElementById('progress-text');
+  var saved = [];
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { saved = []; }
+  if (!Array.isArray(saved)) saved = [];
+  boxes.forEach(function(b){ if (saved.indexOf(b.getAttribute('data-id')) > -1) b.checked = true; });
+
+  function update(){
+    var done = boxes.filter(function(b){ return b.checked; });
+    boxes.forEach(function(b){ b.closest('li').classList.toggle('done', b.checked); });
+    bar.style.width = (done.length / boxes.length * 100) + '%';
+    barWrap.setAttribute('aria-valuenow', done.length);
+    txt.textContent = done.length + ' de ' + boxes.length + ' pasos completados';
+    try {
+      localStorage.setItem(KEY, JSON.stringify(done.map(function(b){ return b.getAttribute('data-id'); })));
+    } catch (e) {}
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', update); });
+  update();
+
+  /* Repaso */
+  var QUIZ = [
+    { q: '¿Cuál de estas es una pregunta que la ciencia puede investigar?',
+      o: ['¿Cuál es el color más bonito?', '¿Cuántos días tarda en germinar un frijol a 25 °C?', '¿Es mejor el verano que el invierno?'],
+      a: 1, why: 'Se puede observar y medir (días), y otras personas pueden repetirlo. Las otras dos dependen del gusto de cada quien.' },
+    { q: '¿Cuál de estas es una hipótesis bien escrita?',
+      o: ['Las plantas son verdes.', 'Si una planta recibe menos agua, entonces tendrá menos hojas nuevas.', '¿Las plantas necesitan agua?'],
+      a: 1, why: 'Es una respuesta posible, tiene forma «Si…, entonces…» y se puede poner a prueba. La primera es un hecho y la tercera es una pregunta.' },
+    { q: 'Al diseñar un experimento justo, ¿qué es lo más importante?',
+      o: ['Cambiar varias cosas a la vez para ver más efectos.', 'Cambiar una sola cosa y mantener todo lo demás igual.', 'Hacerlo una sola vez y no anotar nada.'],
+      a: 1, why: 'Si cambias una sola cosa, sabes que el resultado se debe a ese cambio. Anotar y repetir la prueba también ayuda a comprobarlo.' },
+    { q: 'Ya organizaste y analizaste tus resultados. ¿Qué paso sigue?',
+      o: ['Observación', 'Conclusión', 'Hipótesis'],
+      a: 1, why: 'Después de analizar los datos se decide si apoyan o no la hipótesis: eso es la conclusión.' },
+    { q: 'Tus resultados no apoyan tu hipótesis. ¿Qué debes hacer?',
+      o: ['Cambiar los datos para que sí coincidan.', 'Aceptar el resultado, explicarlo y, si hace falta, plantear otra hipótesis.', 'Borrar el experimento y olvidarlo.'],
+      a: 1, why: 'En ciencia se respetan los datos. Un resultado inesperado también enseña algo y puede llevar a una nueva pregunta.' }
+  ];
+  var quiz = document.getElementById('quiz');
+  var answered = 0, correct = 0;
+  var score = document.createElement('p');
+  score.className = 'score';
+  score.setAttribute('aria-live', 'polite');
+
+  QUIZ.forEach(function(item, qi){
+    var box = document.createElement('div'); box.className = 'q';
+    var t = document.createElement('p'); t.className = 'qt'; t.textContent = (qi + 1) + '. ' + item.q;
+    var opts = document.createElement('div'); opts.className = 'opts';
+    var why = document.createElement('p'); why.className = 'why'; why.setAttribute('aria-live', 'polite');
+    item.o.forEach(function(text, oi){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.textContent = text;
+      b.addEventListener('click', function(){
+        var btns = opts.querySelectorAll('button');
+        Array.prototype.forEach.call(btns, function(x, xi){
+          x.disabled = true;
+          if (xi === item.a) x.classList.add('correct');
+        });
+        if (oi === item.a) { correct++; why.textContent = '¡Correcto! ' + item.why; }
+        else { b.classList.add('wrong'); why.textContent = 'Casi. ' + item.why; }
+        answered++;
+        if (answered === QUIZ.length) {
+          score.textContent = 'Acertaste ' + correct + ' de ' + QUIZ.length + '. ' +
+            (correct >= 4 ? 'Vas muy bien, ya puedes hacer las actividades.' : 'Vuelve a leer las secciones de la ciencia y del método científico antes de las actividades.');
+        }
+      });
+      opts.appendChild(b);
+    });
+    box.appendChild(t); box.appendChild(opts); box.appendChild(why);
+    quiz.appendChild(box);
+  });
+  quiz.appendChild(score);
+})();
+</script>
+</body>
+</html>
