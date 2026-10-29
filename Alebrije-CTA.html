@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi alebrije adaptado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+
+/* Layout: columna de lectura con cuatro pasos en secuencia; franjas de color tipo papel picado separan las partes */
+:root{
+  --bg:#fffaf3; --surface:#ffffff; --fg:#2a1f2d; --muted:#6b5a6e; --line:#ecdcd0;
+  --magenta:#c2185b; --turq:#00838f; --cempa:#e8890c; --morado:#6a3d9a; --verde:#2e7d32;
+  --tint-m:#fde7ef; --tint-t:#e0f4f5; --tint-c:#fff1dc; --tint-p:#efe6f7;
+  --f-display:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif;
+  --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1b1420; --surface:#251c2b; --fg:#f5ecf2; --muted:#bfaec4; --line:#3d3045;
+  --magenta:#f06292; --turq:#4dd0e1; --cempa:#ffb74d; --morado:#b39ddb; --verde:#81c784;
+  --tint-m:#3a1f2c; --tint-t:#16313a; --tint-c:#3a2a14; --tint-p:#2e2440; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1420; --surface:#251c2b; --fg:#f5ecf2; --muted:#bfaec4; --line:#3d3045;
+  --magenta:#f06292; --turq:#4dd0e1; --cempa:#ffb74d; --morado:#b39ddb; --verde:#81c784;
+  --tint-m:#3a1f2c; --tint-t:#16313a; --tint-c:#3a2a14; --tint-p:#2e2440; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:1.05rem;line-height:1.6}
+.wrap{max-width:46rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:1.5rem 3rem;display:flex;flex-direction:column;gap:2.2rem}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,7vw,3.2rem)}
+h2{font-size:clamp(1.5rem,4.5vw,1.9rem)}
+h3{font-size:1.2rem}
+p{margin:0}
+.picado{height:14px;background:
+  linear-gradient(135deg,var(--bg) 25%,transparent 25%) -7px 0/14px 14px,
+  linear-gradient(225deg,var(--bg) 25%,transparent 25%) -7px 0/14px 14px,
+  linear-gradient(90deg,var(--magenta) 0 25%,var(--cempa) 25% 50%,var(--turq) 50% 75%,var(--morado) 75%);border-radius:2px}
+header{display:flex;flex-direction:column;gap:.8rem}
+.eyebrow{font-weight:800;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--magenta)}
+.lead{font-size:1.15rem;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-size:.85rem;font-weight:700;padding:.25rem .7rem;border-radius:999px;background:var(--tint-p);color:var(--morado)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
+.paso{display:grid;grid-template-columns:3.2rem 1fr;gap:1rem;align-items:start}
+.num{font-family:var(--f-display);font-size:1.6rem;width:3.2rem;height:3.2rem;border-radius:50%;display:grid;place-items:center;color:#fff}
+.paso:nth-of-type(1) .num{background:var(--magenta)}
+.paso:nth-of-type(2) .num{background:var(--cempa)}
+.paso:nth-of-type(3) .num{background:var(--turq)}
+.paso:nth-of-type(4) .num{background:var(--morado)}
+.paso-body{min-width:0;display:flex;flex-direction:column;gap:.8rem}
+.paso-body .eyebrow{margin-bottom:-.6rem}
+ul,ol{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.3rem}
+.nota{border-left:4px solid var(--cempa);background:var(--tint-c);padding:.7rem 1rem;border-radius:0 10px 10px 0}
+.tabla-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:30rem;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--tint-t);color:var(--fg);font-weight:800}
+td.vacio{height:2.2rem}
+.banco{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.8rem}
+.banco .box{gap:.35rem}
+.banco h3{color:var(--turq)}
+.banco p{font-size:.95rem}
+.ejemplo{background:var(--tint-m);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:.8rem}
+.ejemplo h3{color:var(--magenta)}
+.check li{list-style:none;position:relative;padding-left:1.6rem}
+.check{padding-left:0}
+.check li::before{content:"";position:absolute;left:0;top:.35rem;width:1rem;height:1rem;border:2px solid var(--verde);border-radius:4px}
+.entrega{background:var(--tint-t);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:.5rem}
+strong{font-weight:800}
+.video-btn{align-self:flex-start;display:inline-block;font-weight:800;text-decoration:none;color:#fff;background:var(--magenta);padding:.6rem 1.1rem;border-radius:999px}
+.video-btn:hover{filter:brightness(1.08)}
+.video-btn:focus-visible{outline:3px solid var(--cempa);outline-offset:3px}
+@media (max-width:30rem){.paso{grid-template-columns:1fr}.num{width:2.6rem;height:2.6rem;font-size:1.3rem}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="picado" aria-hidden="true"></div>
+    <span class="eyebrow">Biología · Adaptaciones de los seres vivos</span>
+    <h1>Mi alebrije adaptado</h1>
+    <p class="lead">Los alebrijes son criaturas fantásticas del arte popular mexicano que combinan partes de varios animales. En esta actividad vas a inventar uno, pero con una condición: <strong>cada parte de su cuerpo debe servirle para sobrevivir</strong> en el lugar donde vive.</p>
+    <div class="meta"><span class="chip">4 secciones</span><span class="chip">Cuaderno o app Pages</span><span class="chip">Entrega en Knotion</span></div>
+  </header>
+
+  <section class="box">
+    <h3>Recuerda: ¿qué es una adaptación?</h3>
+    <p>Es una característica que ayuda a un ser vivo a sobrevivir y reproducirse en su ambiente. Puede ser del <strong>cuerpo</strong> (estructural, como el pelaje grueso del oso polar), de su <strong>funcionamiento interno</strong> (fisiológica, como el camello que aguanta sin beber agua) o de su <strong>conducta</strong> (como las aves que migran en invierno).</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:1.6rem">
+    <h2>Lo que vas a hacer</h2>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">1</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 1</span>
+        <h3>Mira el video sobre adaptaciones y toma notas</h3>
+        <a class="video-btn" href="https://www.youtube.com/watch?v=F6IuEbvFVhs" target="_blank" rel="noopener">Ver el video en YouTube</a>
+        <p>Míralo completo y, en tu cuaderno, responde mientras lo ves:</p>
+        <ol>
+          <li>Con tus palabras, ¿qué es una adaptación?</li>
+          <li>Anota <strong>al menos cinco animales</strong> que aparezcan en el video y una adaptación de cada uno.</li>
+          <li>Para cada adaptación, escribe <strong>para qué le sirve</strong> al animal (comer, defenderse, moverse, soportar el frío o el calor, etc.).</li>
+          <li>¿Encontraste algún ejemplo de adaptación de <strong>conducta</strong> o de <strong>funcionamiento interno</strong>? Escríbelo.</li>
+        </ol>
+        <p>Estas notas serán tu inspiración en la Sección 3: muchos de esos animales pueden formar parte de tu alebrije.</p>
+        <p class="nota">Puedes pausar el video cuantas veces quieras. Escribe con tus palabras, no copies todo.</p>
+      </div>
+    </article>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">2</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 2</span>
+        <h3>Resuelve una sopa de letras</h3>
+        <p>Entra a Knotion, ve a la <strong>Sesión 4, Actividad 2</strong>. Ahí hay dos sopas de letras: <strong>escoge solo una</strong> y resuélvela.</p>
+        <p>Puedes resolverla de dos formas: <strong>imprímela</strong>, resuélvela a mano y tómale una foto, o <strong>resuélvela en el iPad</strong> con las herramientas para marcar o dibujar y guarda una captura.</p>
+        <p>Cuando termines, escribe en tu cuaderno <strong>tres palabras de la sopa</strong> que te den ideas para tu alebrije y explica por qué.</p>
+        <p class="nota"><strong>Entrega de las Secciones 1 y 2:</strong> sube las respuestas de tus notas del video y tu sopa de letras resuelta en Knotion, <strong>Sesión 4, Paso 1</strong>.</p>
+      </div>
+    </article>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">3</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 3</span>
+        <h3>Diseña tu alebrije</h3>
+        <p>Primero decide <strong>dónde vive</strong> tu alebrije: desierto, selva, océano, polo, montaña, río o bosque. Luego escoge <strong>de 3 a 5 animales reales</strong> que lo inspiren. Copia esta tabla en tu cuaderno y llénala:</p>
+        <div class="tabla-wrap">
+          <table>
+            <thead><tr><th>Parte del cuerpo</th><th>Animal que la inspira</th><th>¿Para qué le sirve? (función adaptativa)</th><th>Tipo de adaptación</th></tr></thead>
+            <tbody>
+              <tr><td class="vacio"></td><td></td><td></td><td></td></tr>
+              <tr><td class="vacio"></td><td></td><td></td><td></td></tr>
+              <tr><td class="vacio"></td><td></td><td></td><td></td></tr>
+              <tr><td class="vacio"></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Ponle un <strong>nombre</strong> a tu alebrije y escribe una o dos oraciones sobre cómo come, cómo se defiende o cómo se mueve en su ambiente.</p>
+      </div>
+    </article>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">4</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 4</span>
+        <h3>Dibuja y haz tu cartel</h3>
+        <p>En una hoja blanca o de color (o en Pages), dibuja tu alebrije <strong>grande y a color</strong>. Tu cartel debe tener:</p>
+        <ul>
+          <li>El <strong>nombre</strong> del alebrije como título.</li>
+          <li>El <strong>hábitat</strong> donde vive (puedes dibujarlo de fondo).</li>
+          <li><strong>Flechas o líneas</strong> que señalen al menos 4 partes del cuerpo.</li>
+          <li>Junto a cada flecha: la parte, el animal que la inspiró y <strong>su función adaptativa</strong>.</li>
+        </ul>
+        <p class="nota"><strong>Entrega de las Secciones 3 y 4:</strong> sube tu tabla de diseño y tu cartel terminado en Knotion, <strong>Sesión 5, Paso 2</strong>.</p>
+      </div>
+    </article>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:1rem">
+    <h2>Banco de ideas</h2>
+    <p>Si no sabes por dónde empezar, aquí tienes algunas características reales:</p>
+    <div class="banco">
+      <div class="box"><h3>Patas palmeadas</h3><p>Pato, rana. Ayudan a nadar empujando más agua.</p></div>
+      <div class="box"><h3>Orejas grandes</h3><p>Liebre del desierto, fénec. Sueltan calor y escuchan depredadores.</p></div>
+      <div class="box"><h3>Caparazón</h3><p>Tortuga, armadillo. Protege el cuerpo de ataques.</p></div>
+      <div class="box"><h3>Camuflaje</h3><p>Camaleón, búho. Colores que lo esconden en su entorno.</p></div>
+      <div class="box"><h3>Grasa y pelaje grueso</h3><p>Oso polar, foca. Guardan el calor en lugares fríos.</p></div>
+      <div class="box"><h3>Ojos grandes</h3><p>Búho, tarsero. Ven bien de noche con poca luz.</p></div>
+      <div class="box"><h3>Cola prensil</h3><p>Mono araña. Se sujeta de ramas para moverse en la selva.</p></div>
+      <div class="box"><h3>Aletas y branquias</h3><p>Peces, ajolote. Nadan y obtienen oxígeno del agua.</p></div>
+    </div>
+  </section>
+
+  <section class="ejemplo">
+    <h3>Ejemplo: el Fenecorpión del desierto</h3>
+    <p>Vive en el desierto de Chihuahua, de día hace mucho calor y de noche mucho frío.</p>
+    <ul>
+      <li><strong>Orejas de fénec:</strong> liberan calor y le permiten oír insectos bajo la arena.</li>
+      <li><strong>Joroba de camello:</strong> guarda grasa como reserva de energía cuando no hay comida.</li>
+      <li><strong>Cola de alacrán:</strong> se defiende de depredadores con su aguijón.</li>
+      <li><strong>Piel de camaleón:</strong> cambia al color de la arena para camuflarse.</li>
+      <li><strong>Conducta:</strong> sale de noche, cuando hace menos calor.</li>
+    </ul>
+    <p style="font-size:.95rem;color:var(--muted)">Este es solo un ejemplo. Tu alebrije debe ser diferente.</p>
+  </section>
+
+  <section class="box">
+    <h2>Antes de entregar, revisa</h2>
+    <ul class="check">
+      <li>Notas del video con las 4 preguntas respondidas.</li>
+      <li>Sopa de letras resuelta y 3 palabras que te dieron ideas.</li>
+      <li>Tabla con al menos 4 partes, su animal y su función.</li>
+      <li>Hábitat elegido y nombre del alebrije.</li>
+      <li>Cartel a color con flechas señalando cada parte y su función adaptativa.</li>
+      <li>Al menos una adaptación de conducta o fisiológica, no solo del cuerpo.</li>
+    </ul>
+  </section>
+
+  <section class="entrega">
+    <h2>Entrega</h2>
+    <p>Toma fotos claras o capturas de tu trabajo y súbelas a Knotion en dos partes:</p>
+    <ul>
+      <li><strong>Sesión 4, Paso 1:</strong> notas del video (Sección 1) y sopa de letras resuelta (Sección 2).</li>
+      <li><strong>Sesión 5, Paso 2:</strong> tabla de diseño (Sección 3) y cartel de tu alebrije (Sección 4).</li>
+    </ul>
+    <p>En el mensaje de Remind encontrarás capturas de pantalla que te muestran dónde subir cada parte.</p>
+  </section>
+
+  <div class="picado" aria-hidden="true"></div>
+</div>
+</body>
+</html>
