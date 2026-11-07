@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Darwin y la evolución</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+
+/* Layout: misma columna de lectura que las páginas anteriores; cada sesión es un bloque con su franja de estratos de roca, y dentro van las secciones numeradas */
+:root{
+  --bg:#f7f5ef; --surface:#ffffff; --fg:#1f2a2e; --muted:#5b6a6e; --line:#dcd8cc;
+  --mar:#1f5f7a; --arena:#c07a12; --musgo:#4f7a2a; --oxido:#9c4221; --verde:#2e7d32;
+  --tint-mar:#e2eff4; --tint-arena:#fbefd9; --tint-musgo:#e9f1df; --tint-oxido:#f7e4dc;
+  --f-display:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif;
+  --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#151b1d; --surface:#1e2729; --fg:#eef2f1; --muted:#a9b6b8; --line:#33403f;
+  --mar:#6fb6d4; --arena:#f0b450; --musgo:#9cc56b; --oxido:#e58a63; --verde:#81c784;
+  --tint-mar:#173039; --tint-arena:#3a2c14; --tint-musgo:#223018; --tint-oxido:#3a2219; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151b1d; --surface:#1e2729; --fg:#eef2f1; --muted:#a9b6b8; --line:#33403f;
+  --mar:#6fb6d4; --arena:#f0b450; --musgo:#9cc56b; --oxido:#e58a63; --verde:#81c784;
+  --tint-mar:#173039; --tint-arena:#3a2c14; --tint-musgo:#223018; --tint-oxido:#3a2219; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:1.05rem;line-height:1.6}
+.wrap{max-width:46rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:1.5rem 3rem;display:flex;flex-direction:column;gap:2.4rem}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,7vw,3.2rem)}
+h2{font-size:clamp(1.5rem,4.5vw,1.9rem)}
+h3{font-size:1.2rem}
+p{margin:0}
+a{color:var(--mar)}
+.estratos{height:16px;border-radius:3px;background:linear-gradient(180deg,var(--arena) 0 25%,var(--oxido) 25% 45%,var(--musgo) 45% 70%,var(--mar) 70%)}
+header{display:flex;flex-direction:column;gap:.8rem}
+.eyebrow{font-weight:800;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oxido)}
+.lead{font-size:1.15rem;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-size:.85rem;font-weight:700;padding:.25rem .7rem;border-radius:999px;background:var(--tint-mar);color:var(--mar);text-decoration:none}
+a.chip:hover{filter:brightness(.97)}
+a.chip:focus-visible,.video-btn:focus-visible{outline:3px solid var(--arena);outline-offset:3px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
+.sesion{display:flex;flex-direction:column;gap:1.4rem;scroll-margin-top:1rem}
+.sesion-head{display:flex;flex-direction:column;gap:.35rem;padding-top:.9rem;border-top:4px solid var(--c)}
+.sesion-head .eyebrow{color:var(--c)}
+.s7{--c:var(--mar);--t:var(--tint-mar)}
+.s8{--c:var(--oxido);--t:var(--tint-oxido)}
+.s9{--c:var(--musgo);--t:var(--tint-musgo)}
+.s10{--c:var(--arena);--t:var(--tint-arena)}
+.paso{display:grid;grid-template-columns:3.2rem 1fr;gap:1rem;align-items:start}
+.num{font-family:var(--f-display);font-size:1.6rem;width:3.2rem;height:3.2rem;border-radius:50%;display:grid;place-items:center;color:var(--bg);background:var(--c)}
+.paso-body{min-width:0;display:flex;flex-direction:column;gap:.8rem}
+.paso-body .eyebrow{margin-bottom:-.6rem;color:var(--c)}
+ul,ol{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.3rem}
+.nota{border-left:4px solid var(--c,var(--arena));background:var(--t,var(--tint-arena));padding:.7rem 1rem;border-radius:0 10px 10px 0}
+.datos{background:var(--t);border-radius:14px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.5rem}
+.tabla-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--t,var(--tint-mar));color:var(--fg);font-weight:800}
+td.anio{font-variant-numeric:tabular-nums;font-weight:800;white-space:nowrap}
+.banco{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.8rem}
+.banco .box{gap:.35rem}
+.banco h3{color:var(--c)}
+.banco p{font-size:.95rem}
+.banco .img{font-size:.88rem;color:var(--muted)}
+.diagrama{overflow-x:auto}
+.diagrama svg{display:block;width:100%;min-width:34rem;height:auto}
+.mm-line{stroke:var(--mar);stroke-width:2.5}
+.mm-center{fill:var(--mar)}
+.mm-center-t{fill:var(--bg);font-family:var(--f-display);font-size:20px}
+.mm-node{fill:var(--surface);stroke:var(--mar);stroke-width:2}
+.mm-small{fill:var(--muted);font-family:var(--f-body);font-size:13px}
+.mm-name{fill:var(--fg);font-family:var(--f-body);font-weight:800;font-size:16px}
+.check li{list-style:none;position:relative;padding-left:1.6rem}
+.check{padding-left:0}
+.check li::before{content:"";position:absolute;left:0;top:.35rem;width:1rem;height:1rem;border:2px solid var(--verde);border-radius:4px}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
+.checks h3{font-size:1.05rem}
+.entrega{background:var(--tint-mar);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem}
+.entrega table{min-width:26rem}
+.entrega th{background:var(--surface)}
+strong{font-weight:800}
+.video-btn{align-self:flex-start;display:inline-block;font-weight:800;text-decoration:none;color:var(--bg);background:var(--c);padding:.6rem 1.1rem;border-radius:999px}
+.video-btn:hover{filter:brightness(1.08)}
+.pendiente{align-self:flex-start;font-weight:800;font-size:.95rem;color:var(--c);border:2px dashed var(--c);padding:.5rem 1rem;border-radius:999px}
+@media (max-width:30rem){.paso{grid-template-columns:1fr}.num{width:2.6rem;height:2.6rem;font-size:1.3rem}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="estratos" aria-hidden="true"></div>
+    <span class="eyebrow">Biología · Sesiones 7 a 10</span>
+    <h1>Darwin y la evolución</h1>
+    <p class="lead">En estas sesiones vas a seguir el viaje de Charles Darwin, conocer las pruebas que demuestran que los seres vivos cambian con el tiempo, fabricar tu propio fósil y ver cómo la teoría de la evolución se ha ido transformando hasta hoy.</p>
+    <nav class="meta" aria-label="Ir a cada sesión">
+      <a class="chip" href="#sesion-7">Sesión 7</a>
+      <a class="chip" href="#sesion-8">Sesión 8</a>
+      <a class="chip" href="#sesion-9">Sesión 9</a>
+      <a class="chip" href="#sesion-10">Sesión 10</a>
+    </nav>
+  </header>
+
+  <section class="box">
+    <h3>Recuerda: ¿qué es la evolución?</h3>
+    <p>Es el proceso por el cual las especies <strong>cambian a lo largo de muchas generaciones</strong>. En la sesión anterior viste la <strong>selección natural</strong>: los individuos con características que les ayudan a sobrevivir en su ambiente tienen más crías y les heredan esas características. Con el tiempo, esto puede formar especies nuevas.</p>
+  </section>
+
+  <!-- ================= SESIÓN 7 ================= -->
+  <section class="sesion s7" id="sesion-7">
+    <div class="sesion-head">
+      <span class="eyebrow">Sesión 7</span>
+      <h2>¿Cuáles fueron las aportaciones de Darwin?</h2>
+    </div>
+
+    <div class="datos">
+      <h3>Datos del viaje</h3>
+      <ul>
+        <li>Darwin tenía <strong>22 años</strong> cuando subió al barco <strong>HMS Beagle</strong> como naturalista.</li>
+        <li>El viaje duró casi <strong>5 años (1831 a 1836)</strong> y dio la vuelta al mundo: Sudamérica, las islas Galápagos, Australia y regreso a Inglaterra.</li>
+        <li>En 1859 publicó su libro <strong><em>El origen de las especies</em></strong>, donde explicó la evolución por selección natural.</li>
+      </ul>
+    </div>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">1</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 1 · Paso 2 en Knotion</span>
+        <h3>Investiga el viaje de Darwin en el Beagle</h3>
+        <p>En Knotion, el Paso 2 tiene un interactivo. <strong>No necesitas hacerlo.</strong> En su lugar, haz una breve investigación en internet o en tu libro y responde en tu cuaderno o en Pages:</p>
+        <ol>
+          <li>¿Quién era Charles Darwin y por qué viajó en el HMS Beagle?</li>
+          <li>¿Por qué lugares pasó el barco? Dibuja un mapa sencillo de la ruta.</li>
+          <li>¿Qué fósiles encontró en Sudamérica y a qué animales vivos se parecían?</li>
+          <li>¿Qué observó en las islas Galápagos con los pinzones, los sinsontes y las tortugas?</li>
+          <li>¿Cuáles fueron sus principales aportaciones a la ciencia? Menciona al menos tres.</li>
+        </ol>
+        <p class="nota">Pistas para buscar: <strong>selección natural</strong>, <strong>ancestro común</strong>, <strong>las especies cambian con el tiempo</strong> y <strong>Alfred Russel Wallace</strong>, otro científico que llegó a la misma idea que Darwin.</p>
+        <p class="nota"><strong>Entrega:</strong> sube tu investigación en Knotion, <strong>Sesión 7, Paso 2</strong>.</p>
+      </div>
+    </article>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">2</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 2 · Paso 3 en Knotion</span>
+        <h3>Mapa mental: evidencias de la evolución</h3>
+        <p>Haz un mapa mental en una hoja o en el iPad. En el centro escribe <strong>«Evidencias de la evolución»</strong> y de ahí saca cinco ramas. En cada rama pon <strong>una imagen</strong> (dibujada, impresa o pegada desde internet) y <strong>una descripción corta</strong> con tus palabras.</p>
+        <div class="diagrama" role="img" aria-label="Esquema del mapa mental: en el centro Evidencias de la evolución, con cinco ramas: pruebas paleontológicas, anatómicas, biogeográficas, embriológicas y bioquímicas y moleculares. Cada rama lleva una imagen y una descripción.">
+          <svg viewBox="0 0 640 410" aria-hidden="true">
+            <line class="mm-line" x1="320" y1="200" x2="105" y2="50"/>
+            <line class="mm-line" x1="320" y1="200" x2="535" y2="50"/>
+            <line class="mm-line" x1="320" y1="200" x2="105" y2="355"/>
+            <line class="mm-line" x1="320" y1="200" x2="320" y2="355"/>
+            <line class="mm-line" x1="320" y1="200" x2="535" y2="355"/>
+            <ellipse class="mm-center" cx="320" cy="200" rx="135" ry="46"/>
+            <text class="mm-center-t" x="320" y="194" text-anchor="middle">Evidencias de</text>
+            <text class="mm-center-t" x="320" y="218" text-anchor="middle">la evolución</text>
+            <g>
+              <rect class="mm-node" x="10" y="10" width="190" height="80" rx="12"/>
+              <text class="mm-small" x="105" y="32" text-anchor="middle">Pruebas</text>
+              <text class="mm-name" x="105" y="54" text-anchor="middle">paleontológicas</text>
+              <text class="mm-small" x="105" y="76" text-anchor="middle">imagen + descripción</text>
+            </g>
+            <g>
+              <rect class="mm-node" x="440" y="10" width="190" height="80" rx="12"/>
+              <text class="mm-small" x="535" y="32" text-anchor="middle">Pruebas</text>
+              <text class="mm-name" x="535" y="54" text-anchor="middle">anatómicas</text>
+              <text class="mm-small" x="535" y="76" text-anchor="middle">imagen + descripción</text>
+            </g>
+            <g>
+              <rect class="mm-node" x="10" y="315" width="190" height="80" rx="12"/>
+              <text class="mm-small" x="105" y="337" text-anchor="middle">Pruebas</text>
+              <text class="mm-name" x="105" y="359" text-anchor="middle">biogeográficas</text>
+              <text class="mm-small" x="105" y="381" text-anchor="middle">imagen + descripción</text>
+            </g>
+            <g>
+              <rect class="mm-node" x="225" y="315" width="190" height="80" rx="12"/>
+              <text class="mm-small" x="320" y="337" text-anchor="middle">Pruebas</text>
+              <text class="mm-name" x="320" y="359" text-anchor="middle">embriológicas</text>
+              <text class="mm-small" x="320" y="381" text-anchor="middle">imagen + descripción</text>
+            </g>
+            <g>
+              <rect class="mm-node" x="440" y="315" width="190" height="80" rx="12"/>
+              <text class="mm-small" x="535" y="337" text-anchor="middle">Pruebas bioquímicas</text>
+              <text class="mm-name" x="535" y="359" text-anchor="middle">y moleculares</text>
+              <text class="mm-small" x="535" y="381" text-anchor="middle">imagen + descripción</text>
+            </g>
+          </svg>
+        </div>
+        <p>Usa esta información como guía para tus descripciones:</p>
+        <div class="banco">
+          <div class="box"><h3>Paleontológicas</h3><p>Los <strong>fósiles</strong> son restos o huellas de seres vivos del pasado. Muestran especies que ya no existen y cómo cambiaron con el tiempo.</p><p class="img">Idea de imagen: el fósil de <em>Archaeopteryx</em>, con rasgos de reptil y de ave.</p></div>
+          <div class="box"><h3>Anatómicas</h3><p>Animales distintos tienen <strong>los mismos huesos</strong> acomodados igual, aunque los usen para cosas diferentes. Esto indica que vienen de un ancestro común.</p><p class="img">Idea de imagen: brazo humano, ala de murciélago, aleta de ballena y pata de gato.</p></div>
+          <div class="box"><h3>Biogeográficas</h3><p>Estudian <strong>dónde vive cada especie</strong>. Las especies de islas cercanas se parecen entre sí y a las del continente más próximo, pero cada una cambió según su lugar.</p><p class="img">Idea de imagen: los pinzones de las Galápagos o los marsupiales de Australia.</p></div>
+          <div class="box"><h3>Embriológicas</h3><p>Los <strong>embriones</strong> de peces, aves, reptiles y mamíferos se parecen mucho en sus primeras etapas: todos tienen cola y pliegues en el cuello.</p><p class="img">Idea de imagen: embriones de varios vertebrados lado a lado.</p></div>
+          <div class="box"><h3>Bioquímicas y moleculares</h3><p>Todos los seres vivos usan <strong>ADN</strong> y el mismo código genético. Entre más se parece el ADN de dos especies, más cercano es su parentesco. Los humanos y los chimpancés comparten cerca del 98&nbsp;% de su ADN.</p><p class="img">Idea de imagen: la doble hélice del ADN o una comparación de secuencias.</p></div>
+        </div>
+        <p class="nota"><strong>Entrega:</strong> sube una foto o captura de tu mapa mental en Knotion, <strong>Sesión 7, Paso 3</strong>.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= SESIÓN 8 ================= -->
+  <section class="sesion s8" id="sesion-8">
+    <div class="sesion-head">
+      <span class="eyebrow">Sesión 8</span>
+      <h2>Práctica: simulación de fósiles</h2>
+    </div>
+
+    <div class="datos">
+      <h3>¿Cómo se forma un fósil?</h3>
+      <p>Cuando un ser vivo muere y queda cubierto rápido por lodo o arena, sus partes duras pueden quedar marcadas en la roca durante millones de años. Algunos tipos de fósiles:</p>
+      <ul>
+        <li><strong>Molde:</strong> el hueco que deja el organismo en la roca.</li>
+        <li><strong>Vaciado o contramolde:</strong> cuando ese hueco se rellena de minerales y forma una copia del organismo.</li>
+        <li><strong>Huella o impresión:</strong> marcas como pisadas o la forma de una hoja.</li>
+        <li><strong>Petrificación:</strong> los minerales reemplazan poco a poco al hueso o la madera.</li>
+        <li><strong>Conservación completa:</strong> organismos atrapados en ámbar o en hielo.</li>
+      </ul>
+    </div>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">3</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 3 · Paso 3 en Knotion</span>
+        <h3>Haz tu fósil en casa y completa el reporte</h3>
+        <a class="video-btn" href="https://youtu.be/X79ZYo1luAI" target="_blank" rel="noopener">Ver el video de la práctica</a>
+        <p>Mira el video, reúne tus materiales y sigue los pasos. Pide ayuda a un adulto para preparar los materiales. Mientras trabajas, <strong>toma fotografías</strong> de:</p>
+        <ol>
+          <li>Tus materiales antes de empezar.</li>
+          <li>Cada paso del procedimiento.</li>
+          <li>Tu fósil terminado.</li>
+        </ol>
+        <p>Después completa el <strong>reporte que está en Knotion, Sesión 8, Paso 3</strong>, y agrega tus fotos. Para responderlo, piensa en esto:</p>
+        <ul>
+          <li>¿Qué tipo de fósil simulaste: molde, vaciado o huella?</li>
+          <li>¿Qué representa cada material en la formación de un fósil real?</li>
+          <li>¿Por qué crees que muy pocos seres vivos llegan a convertirse en fósil?</li>
+          <li>¿Qué nos dicen los fósiles sobre la evolución?</li>
+        </ul>
+        <p class="nota"><strong>Entrega:</strong> sube tu reporte con las fotos en Knotion, <strong>Sesión 8, Paso 3</strong>.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= SESIÓN 9 ================= -->
+  <section class="sesion s9" id="sesion-9">
+    <div class="sesion-head">
+      <span class="eyebrow">Sesión 9</span>
+      <h2>¿Cómo ha cambiado la teoría de la evolución?</h2>
+    </div>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">4</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 4 · Paso 2 en Knotion</span>
+        <h3>Línea del tiempo de la teoría evolutiva</h3>
+        <p>Haz una línea del tiempo en una hoja horizontal o en el iPad, desde las primeras ideas hasta la actualidad. Incluye <strong>al menos 8 momentos</strong>. En cada uno escribe el <strong>año</strong>, el <strong>científico</strong> y su <strong>idea principal</strong> en una oración. Agrega dibujos o imágenes para hacerla más clara.</p>
+        <p>Puedes elegir de esta lista:</p>
+        <div class="tabla-wrap">
+          <table>
+            <thead><tr><th>Año</th><th>Quién</th><th>Idea principal</th></tr></thead>
+            <tbody>
+              <tr><td class="anio">Antes de 1800</td><td>Fijismo</td><td>Se creía que las especies eran fijas y nunca cambiaban.</td></tr>
+              <tr><td class="anio">1735</td><td>Carlos Linneo</td><td>Creó el sistema para clasificar y nombrar a los seres vivos. Pensaba que las especies no cambiaban.</td></tr>
+              <tr><td class="anio">1749</td><td>Conde de Buffon</td><td>Propuso que la Tierra era muy antigua y que las especies podían cambiar.</td></tr>
+              <tr><td class="anio">1809</td><td>Jean-Baptiste Lamarck</td><td>Primera teoría completa de la evolución: los órganos que se usan se desarrollan y esos cambios se heredan. Hoy sabemos que esa herencia no funciona así.</td></tr>
+              <tr><td class="anio">1812</td><td>Georges Cuvier</td><td>Estudió fósiles y demostró que algunas especies se extinguieron.</td></tr>
+              <tr><td class="anio">1830</td><td>Charles Lyell</td><td>Explicó que la Tierra cambia poco a poco durante millones de años. Inspiró a Darwin.</td></tr>
+              <tr><td class="anio">1831–1836</td><td>Charles Darwin</td><td>Viaje en el HMS Beagle, donde reunió sus observaciones.</td></tr>
+              <tr><td class="anio">1858</td><td>Darwin y Wallace</td><td>Presentaron juntos la idea de la selección natural.</td></tr>
+              <tr><td class="anio">1859</td><td>Charles Darwin</td><td>Publicó <em>El origen de las especies</em>.</td></tr>
+              <tr><td class="anio">1866</td><td>Gregor Mendel</td><td>Descubrió las leyes de la herencia con chícharos.</td></tr>
+              <tr><td class="anio">1901</td><td>Hugo de Vries</td><td>Describió las mutaciones, cambios que aparecen en los seres vivos.</td></tr>
+              <tr><td class="anio">1930–1950</td><td>Teoría sintética</td><td>Unió la selección natural de Darwin con la genética de Mendel. También se llama neodarwinismo.</td></tr>
+              <tr><td class="anio">1953</td><td>Watson, Crick y Franklin</td><td>Descubrieron la forma de doble hélice del ADN.</td></tr>
+              <tr><td class="anio">1967</td><td>Lynn Margulis</td><td>Explicó que algunas partes de la célula fueron antes bacterias independientes (endosimbiosis).</td></tr>
+              <tr><td class="anio">1972</td><td>Eldredge y Gould</td><td>Propusieron que la evolución a veces es rápida y otras veces se detiene (equilibrio puntuado).</td></tr>
+              <tr><td class="anio">2003 a hoy</td><td>Genómica</td><td>Se leyó el genoma humano completo. Hoy se compara el ADN de muchas especies para conocer su parentesco.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Recuerda colocar los momentos <strong>en orden</strong>, del más antiguo al más reciente.</p>
+        <p class="nota"><strong>Entrega:</strong> sube una foto o captura de tu línea del tiempo en Knotion, <strong>Sesión 9, Paso 2</strong>.</p>
+      </div>
+    </article>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">5</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 5 · Paso 4 en Knotion</span>
+        <h3>Responde las preguntas del recurso</h3>
+        <p>Abre el recurso que está en Knotion, <strong>Sesión 9, Paso 4</strong>. Léelo con calma y contesta las preguntas que vienen ahí. Puedes apoyarte en tu línea del tiempo.</p>
+        <p class="nota"><strong>Entrega:</strong> responde y sube tus respuestas en Knotion, <strong>Sesión 9, Paso 4</strong>.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= SESIÓN 10 ================= -->
+  <section class="sesion s10" id="sesion-10">
+    <div class="sesion-head">
+      <span class="eyebrow">Sesión 10</span>
+      <h2>La biodiversidad</h2>
+    </div>
+
+    <article class="paso">
+      <div class="num" aria-hidden="true">6</div>
+      <div class="paso-body">
+        <span class="eyebrow">Sección 6 · Sesión 10 en Knotion</span>
+        <h3>Mira el video sobre biodiversidad y completa la tabla</h3>
+        <a class="video-btn" href="https://www.youtube.com/watch?v=wnx2rx1D6q0" target="_blank" rel="noopener">Ver el video sobre biodiversidad</a>
+        <p>La <strong>biodiversidad</strong> es la variedad de seres vivos que hay en la Tierra: las distintas especies, las diferencias entre individuos de una misma especie y los ecosistemas donde viven. Es el resultado de millones de años de evolución.</p>
+        <p>Mira el video completo. Puedes pausarlo cuantas veces quieras. Después abre la <strong>tabla que está en Knotion, Sesión 10</strong>. En ella vas a elegir <strong>3 animales y 3 plantas</strong> y llenar cuatro columnas:</p>
+        <ul>
+          <li><strong>Especie:</strong> el nombre del animal o la planta.</li>
+          <li><strong>Descripción:</strong> cómo es, dónde vive y qué come o qué necesita.</li>
+          <li><strong>Valor:</strong> por qué es importante. Hay tres tipos de valor; intenta escribir al menos dos.</li>
+          <li><strong>Imagen:</strong> un dibujo o una foto de la especie.</li>
+        </ul>
+        <div class="banco">
+          <div class="box"><h3>Valor biológico</h3><p>El papel que cumple en su ecosistema: poliniza, sirve de alimento, controla plagas, produce oxígeno o da refugio a otras especies.</p></div>
+          <div class="box"><h3>Valor cultural</h3><p>Su importancia para las personas: en la comida, las tradiciones, el arte, los símbolos o la medicina tradicional.</p></div>
+          <div class="box"><h3>Valor ético</h3><p>Merece respeto por ser un ser vivo, no solo por lo que nos da. Tenemos la responsabilidad de cuidarlo, sobre todo si está en peligro por culpa de las personas.</p></div>
+        </div>
+        <p>Así se vería una fila completa:</p>
+        <div class="tabla-wrap">
+          <table>
+            <thead><tr><th>Especie</th><th>Descripción</th><th>Valor (ético, biológico, cultural)</th><th>Imagen</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Animal:</strong> ajolote</td><td>Anfibio que vive en los canales de Xochimilco. Conserva sus branquias toda la vida y puede regenerar partes de su cuerpo.</td><td><strong>Biológico:</strong> se estudia por su capacidad de regenerarse. <strong>Cultural:</strong> símbolo de la cultura mexica y aparece en el billete de 50 pesos. <strong>Ético:</strong> está en peligro de extinción por la contaminación; debemos protegerlo.</td><td>Foto o dibujo del ajolote</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Este es solo un ejemplo: elige especies diferentes. Puedes usar las del video o especies de México y de tu región. Escribe con tus palabras.</p>
+        <p class="nota"><strong>Entrega:</strong> sube tu tabla completa en Knotion, <strong>Sesión 10</strong>.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= REVISIÓN Y ENTREGA ================= -->
+  <section class="box">
+    <h2>Antes de entregar, revisa</h2>
+    <div class="checks">
+      <div>
+        <h3>Sesión 7</h3>
+        <ul class="check">
+          <li>Investigación con las 5 preguntas respondidas.</li>
+          <li>Mapa sencillo de la ruta del Beagle.</li>
+          <li>Mapa mental con las 5 ramas.</li>
+          <li>Cada rama tiene imagen y descripción.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sesión 8</h3>
+        <ul class="check">
+          <li>Fotos de materiales, pasos y fósil terminado.</li>
+          <li>Reporte completo en Knotion.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sesión 9</h3>
+        <ul class="check">
+          <li>Línea del tiempo con al menos 8 momentos en orden.</li>
+          <li>Cada momento tiene año, científico e idea.</li>
+          <li>Preguntas del recurso contestadas.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sesión 10</h3>
+        <ul class="check">
+          <li>Video visto completo.</li>
+          <li>Tabla con 3 animales y 3 plantas.</li>
+          <li>Cada especie tiene descripción, valor e imagen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="entrega">
+    <h2>Entrega</h2>
+    <p>Toma fotos claras o capturas de tu trabajo y súbelas a Knotion así:</p>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Qué entregas</th><th>Dónde lo subes</th></tr></thead>
+        <tbody>
+          <tr><td>Investigación sobre Darwin (Sección 1)</td><td>Sesión 7, Paso 2</td></tr>
+          <tr><td>Mapa mental de evidencias (Sección 2)</td><td>Sesión 7, Paso 3</td></tr>
+          <tr><td>Reporte de la práctica con fotos (Sección 3)</td><td>Sesión 8, Paso 3</td></tr>
+          <tr><td>Línea del tiempo (Sección 4)</td><td>Sesión 9, Paso 2</td></tr>
+          <tr><td>Preguntas del recurso (Sección 5)</td><td>Sesión 9, Paso 4</td></tr>
+          <tr><td>Tabla del video (Sección 6)</td><td>Sesión 10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>En el mensaje de Remind encontrarás capturas de pantalla que te muestran dónde subir cada parte.</p>
+  </section>
+
+  <div class="estratos" aria-hidden="true"></div>
+</div>
+</body>
+</html>
